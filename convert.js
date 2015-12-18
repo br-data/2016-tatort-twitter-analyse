@@ -9,6 +9,7 @@ var filename = 'tweets2015.csv';
 json2csv({ data: json, fields: fields }, function (error, csv) {
 
     if (!error) {
+        
         fs.writeFile(filename, csv, function (error) {
 
             if (!error) {
