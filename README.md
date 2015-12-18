@@ -1,10 +1,10 @@
 # Tatort-Twitter–Tools
-Sammlung an Tools um alle Tweets zum Hashtag #Tatort zu analysieren.
+Sammlung an Tools um alle Tweets zum Hashtag [#Tatort](https://twitter.com/search?f=tweets&vertical=default&q=%23tatort&src=typd) zu analysieren.
 
 ### Verwendung
 1. Repository klonen `git clone https://...`
 2. Erforderliche Module installieren `npm install`
-3. `node app.js` ausführen, um den Scraper zu starten
+3. Zum Beispiel `node download.js` ausführen, um das Skript zu starten.
 
 ### download.js
 Lädt Dateien von mehreren URLs in das Verzeichnis *download* herunter. Die URLs werden als Array angegeben:
