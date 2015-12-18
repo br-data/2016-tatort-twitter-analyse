@@ -25,8 +25,8 @@ function stringToDate() {
 
 				var doc = cursor.next();
 				
-				db.tweets.update({_id : doc._id}, {$set : {german_time : new Date(doc.german_time)}});
-				db.tweets.update({_id : doc._id}, {$set : {published_at : new Date(doc.published_at)}});
+				collection.update({_id : doc._id}, {$set : {german_time : new Date(doc.german_time)}});
+				collection.update({_id : doc._id}, {$set : {published_at : new Date(doc.published_at)}});
 			}
 
 			 db.close();

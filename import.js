@@ -14,11 +14,11 @@ var collectionName = 'tweets';
 function loadFiles() {
 
     var files = [];
-    var normalizedPath = require('path').join(__dirname, 'downloaded');
+    var normalizedPath = require('path').join(__dirname, 'download');
 
     fs.readdirSync(normalizedPath).forEach(function (file) {
 
-        var ref = require('./downloaded/' + file);
+        var ref = require('./download/' + file);
         files.push(ref);
     });
 
