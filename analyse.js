@@ -7,7 +7,8 @@ var collectionName = 'tweets';
 
 var reports = {
 
-    tweetsCount: undefined,
+    tweetCount: undefined,
+    userCount: undefined,
     tweetsPerUser: undefined,
     tweetsPerDate: undefined,
     tweetsPerMinute: undefined
@@ -31,13 +32,23 @@ function analyse() {
             // Count all tweets
             collection.find().count(function (error, result) {
 
-                reports.tweetsCount = result;
+                reports.tweetCount = result;
                 console.log("Total number of tweets:", JSON.stringify(result));
                 
                 closeConnection(db);
             });
 
 
+            // Count all unique users
+            collection.distinct('user_screen_name', function (error, result) {
+
+                reports.usersCount = result.length;
+                console.log("Total number of users:", result.length);
+                
+                closeConnection(db);
+            });
+
+ 
             // Aggregate number of tweets per user
             collection.aggregate([
                 { $group: {
