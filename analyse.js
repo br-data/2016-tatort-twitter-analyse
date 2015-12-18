@@ -32,9 +32,10 @@ function analyse() {
             // Count all tweets
             collection.find().count(function (error, result) {
 
+                // console.log("Total number of tweets:", JSON.stringify(result));
                 reports.tweetCount = result;
-                console.log("Total number of tweets:", JSON.stringify(result));
-                
+                saveText("Total number of tweets: " + JSON.stringify(result), './reports/tweetCount.txt');
+
                 closeConnection(db);
             });
 
@@ -42,9 +43,10 @@ function analyse() {
             // Count all unique users
             collection.distinct('user_screen_name', function (error, result) {
 
-                reports.usersCount = result.length;
-                console.log("Total number of users:", result.length);
-                
+                // console.log("Total number of users:", result.length);
+                reports.userCount = result.length;
+                saveText("Total number of users: " + result.length, './reports/userCount.txt');
+
                 closeConnection(db);
             });
 
@@ -144,6 +146,20 @@ function saveCSV(json, fields, filename) {
     });
 }
 
+function saveText(string, filename) {
+
+    fs.writeFile(filename, string, function (error) {
+
+        if (!error) {
+            
+            console.log('File saved:', filename);
+        } else {
+
+            console.log(error);
+        }
+    });
+}
+
 function closeConnection(db, force) {
 
     if (force) {
@@ -153,7 +169,7 @@ function closeConnection(db, force) {
 
     for (var key in reports) {
 
-        if(reports.hasOwnProperty(key)) {
+        if (reports.hasOwnProperty(key)) {
           
             if (!reports[key]) {
 
