@@ -30,6 +30,7 @@ Konvertiert alle Datum-Strings einer Collection in Date-Objekte:
 ```
 
 ### analyse.js
+Aggregiert und analysiert die Tweets aus der Datenbank. Die Ergebnisse werden als CSV gespeichert.
 
 ### export.js
 Exportiert die Ergebnisse einer Suchanfrage in MongoDB in eine CSV-Tabelle.
