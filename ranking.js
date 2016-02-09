@@ -30,7 +30,7 @@ function ranking() {
                 }},
                 { $sort: { 'count': -1 } },
                 // { $limit: 100 },
-                { $project : { _id: 0, count: 1, name: '$_id', 'tweets': '$count' } }
+                { $project : { _id: 0, count: 0, name: '$_id', 'tweets': '$count' } }
             ], function (error, result) {
 
                 // Calculate rank based on user tweet count

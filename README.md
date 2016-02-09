@@ -35,6 +35,9 @@ Aggregiert und analysiert die Tweets aus der Datenbank. Die Ergebnisse werden al
 ### ranking.js
 Erzeugt eine Ranking der aktivesten Twitterer zum Hashtag Tatort. Importieren mit `mongoimport --db tatort --collection users --file users.json --jsonArray`
 
+### rankingDistribution.js
+Berechnet wie viele Benutzer sich einen Rang teilen.
+
 ### export.js
 Exportiert die Ergebnisse einer Suchanfrage in MongoDB in eine CSV-Tabelle.
 
