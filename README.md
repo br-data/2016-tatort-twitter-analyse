@@ -50,6 +50,9 @@ Berechnet wie viele Benutzer sich einen Rang teilen.
 ### export.js
 Exportiert die Ergebnisse einer Suchanfrage in MongoDB in eine CSV-Tabelle.
 
+### convertChartData.js
+Erzeugt aus Tweets pro absoluter Minute (Timestamp 2015-02-01-20-00) ein Array mit Tweets pro relativer Minute (Minute 1). Diese Daten werden für den Tatort-Tweet-Chart benötigt. 
+
 ### Datenmodell
 Der einzelne Tweet enthält folgende Informationen:
 

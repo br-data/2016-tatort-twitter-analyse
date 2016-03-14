@@ -36,9 +36,9 @@ function analyse() {
             // Count all tweets
             collection.find().count(function (error, result) {
 
-                // console.log("Total number of tweets:", JSON.stringify(result));
+                // console.log('Total number of tweets:', JSON.stringify(result));
                 reports.tweetCount = result;
-                saveText("Total number of tweets: " + JSON.stringify(result), './reports/tweetCount.txt');
+                saveText('Total number of tweets: ' + JSON.stringify(result), './reports/tweetCount.txt');
 
                 closeConnection(db);
             });
@@ -47,14 +47,14 @@ function analyse() {
             // Count all unique users
             collection.distinct('user_screen_name', function (error, result) {
 
-                // console.log("Total number of users:", result.length);
+                // console.log('Total number of users:', result.length);
                 reports.userCount = result.length;
-                saveText("Total number of users: " + result.length, './reports/userCount.txt');
+                saveText('Total number of users: ' + result.length, './reports/userCount.txt');
 
                 closeConnection(db);
             });
 
- 
+
             // Aggregate number of tweets per user
             collection.aggregate([
                 { $group: {
@@ -65,7 +65,7 @@ function analyse() {
                 { $limit: 100 }
             ], function (error, result) {
 
-                // console.log("Number of tweets per user:", JSON.stringify(result));
+                // console.log('Number of tweets per user:', JSON.stringify(result));
                 reports.tweetsPerUser = result;
                 saveCSV(result, ['_id', 'count'], './reports/tweetsPerUser.csv');
 
@@ -84,7 +84,7 @@ function analyse() {
                 { $limit: 100 }
             ], function (error, result) {
 
-                // console.log("Most frequently used hashtags:", JSON.stringify(result));
+                // console.log('Most frequently used hashtags:', JSON.stringify(result));
                 reports.hashtags = result;
                 saveCSV(result, ['_id', 'count'], './reports/hashtags.csv');
 
@@ -103,7 +103,7 @@ function analyse() {
                 { $limit: 100 }
             ], function (error, result) {
 
-                // console.log("Most mentioned:", JSON.stringify(result));
+                // console.log('Most mentioned:', JSON.stringify(result));
                 reports.mentions = result;
                 saveCSV(result, ['_id', 'count'], './reports/mentions.csv');
 
@@ -122,7 +122,7 @@ function analyse() {
                 { $limit: 100 }
             ], function (error, result) {
 
-                // console.log("Most shared URLs:", JSON.stringify(result));
+                // console.log('Most shared URLs:', JSON.stringify(result));
                 reports.urls = result;
                 saveCSV(result, ['_id', 'count'], './reports/urls.csv');
 
@@ -138,7 +138,7 @@ function analyse() {
                 .project({ twitter_id: 1, retweet_count: 1, text: 1 })
                 .toArray(function (error, result) {
 
-                    //console.log("Most retweeted:", JSON.stringify(result));
+                    //console.log('Most retweeted:', JSON.stringify(result));
                     reports.retweets = result;
                     saveCSV(result, ['retweet_count', 'twitter_id', 'text'], './reports/retweets.csv');
 
@@ -160,7 +160,7 @@ function analyse() {
                 { $sort: { 'count': -1 } }
             ], function (error, result) {
 
-                // console.log("Number of tweets per date:", JSON.stringify(result));
+                // console.log('Number of tweets per date:', JSON.stringify(result));
                 reports.tweetsPerDate = result;
                 saveCSV(result, ['_id.year', '_id.month', '_id.day', 'count'], './reports/tweetsPerDate.csv');
 
@@ -186,13 +186,16 @@ function analyse() {
 
             ], function (error, result) {
 
-                // console.log("Number of tweets per minute:", JSON.stringify(result));
+                // console.log('Number of tweets per minute:', JSON.stringify(result));
                 reports.tweetsPerMinute = result;
                 saveCSV(result, ['_id.year', '_id.month', '_id.day', '_id.hour', '_id.minute', 'count'], './reports/tweetsPerMinute.csv');
 
+                // Save JSON for the chart
+                saveText(JSON.stringify(result), './chart/tweetsPerMinuteAbs.json');
+
                 closeConnection(db);
             });
-            
+
         } else {
 
             console.log(error);
@@ -209,7 +212,7 @@ function saveCSV(json, fields, filename) {
             fs.writeFile(filename, csv, function (error) {
 
                 if (!error) {
-                    
+
                     console.log('File saved:', filename);
                 } else {
 
@@ -228,7 +231,7 @@ function saveText(string, filename) {
     fs.writeFile(filename, string, function (error) {
 
         if (!error) {
-            
+
             console.log('File saved:', filename);
         } else {
 
@@ -247,7 +250,7 @@ function closeConnection(db, force) {
     for (var key in reports) {
 
         if (reports.hasOwnProperty(key)) {
-          
+
             if (!reports[key]) {
 
                 return false;
