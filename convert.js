@@ -8,20 +8,20 @@ var filename = 'tweets2015.csv';
 
 json2csv({ data: json, fields: fields }, function (error, csv) {
 
-    if (!error) {
-        
-        fs.writeFile(filename, csv, function (error) {
+  if (!error) {
 
-            if (!error) {
+    fs.writeFile(filename, csv, function (error) {
 
-                console.log('File saved:', filename);
-            } else {
+      if (!error) {
 
-                console.log(error);
-            }
-        });
-    } else {
+        console.log('File saved:', filename);
+      } else {
 
         console.log(error);
-    }
+      }
+    });
+  } else {
+
+    console.log(error);
+  }
 });

@@ -7,74 +7,74 @@ var userCollection = 'users';
 
 (function init() {
 
-    ranking();
+  ranking();
 })();
 
 function ranking() {
 
-    mongoClient.connect(mongoUrl, function(error, db) {
+  mongoClient.connect(mongoUrl, function(error, db) {
 
-        if (!error) {
+    if (!error) {
 
-            console.log('Connected to database', mongoUrl);
-            var tweets = db.collection(tweetCollection);
-            var users = db.collection(userCollection);
+      console.log('Connected to database', mongoUrl);
+      var tweets = db.collection(tweetCollection);
+      var users = db.collection(userCollection);
 
-            var bulk = users.initializeUnorderedBulkOp();
+      var bulk = users.initializeUnorderedBulkOp();
 
-            // Aggregate number of tweets per user
-            tweets.aggregate([
-                { $group: {
-                    _id: '$user_screen_name',
-                    count: { $sum: 1 }
-                }},
-                { $sort: { 'count': -1 } },
-                // { $limit: 100 },
-                { $project : { _id: 0, count: 0, name: '$_id', 'tweets': '$count' } }
-            ], function (error, result) {
+      // Aggregate number of tweets per user
+      tweets.aggregate([
+        { $group: {
+          _id: '$user_screen_name',
+          count: { $sum: 1 }
+        }},
+        { $sort: { 'count': -1 } },
+        // { $limit: 100 },
+        { $project : { _id: 0, count: 0, name: '$_id', 'tweets': '$count' } }
+      ], function (error, result) {
 
-                // Calculate rank based on user tweet count
-                var rank = 0;
-                var lastValue = Infinity;
+        // Calculate rank based on user tweet count
+        var rank = 0;
+        var lastValue = Infinity;
 
-                result.forEach(function (doc) {
+        result.forEach(function (doc) {
 
-                    if (doc.tweets < lastValue) {
+          if (doc.tweets < lastValue) {
 
-                        doc.rank = ++rank;
-                        lastValue = doc.tweets;
-                    } else {
+            doc.rank = ++rank;
+            lastValue = doc.tweets;
+          } else {
 
-                        doc.rank = rank;
-                    }
-                });
+            doc.rank = rank;
+          }
+        });
 
-                // Save ranking to (new) collection
-                //users.insert(result);
+        // Save ranking to (new) collection
+        //users.insert(result);
 
-                // Save user ranking to JSON
-                saveJSON(JSON.stringify(result), 'users/users.json');
+        // Save user ranking to JSON
+        saveJSON(JSON.stringify(result), 'users/users.json');
 
-                db.close();
-            });
+        db.close();
+      });
 
-        } else {
+    } else {
 
-            db.close();
-        }
-    });
+      db.close();
+    }
+  });
 }
 
 function saveJSON(string, filename) {
 
-    fs.writeFile(filename, string, function (error) {
+  fs.writeFile(filename, string, function (error) {
 
-        if (!error) {
+    if (!error) {
 
-            console.log('File saved:', filename);
-        } else {
+      console.log('File saved:', filename);
+    } else {
 
-            console.log(error);
-        }
-    });
+      console.log(error);
+    }
+  });
 }

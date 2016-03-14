@@ -31,39 +31,39 @@ var async = require('async');
 
 async.eachLimit(urls, 1, function (url, callback) {
 
-    var fileName = url.match(/\d{4}-\d{2}-\d{2}/)[0] + '.json';
-    var writeStream = fs.createWriteStream('./download/' + fileName);
+  var fileName = url.match(/\d{4}-\d{2}-\d{2}/)[0] + '.json';
+  var writeStream = fs.createWriteStream('./download/' + fileName);
 
-    writeStream.on('open', function () {
+  writeStream.on('open', function () {
 
-        var download = request.get(url);
+    var download = request.get(url);
 
-        console.log("Connection opened");
-        console.log("Receiving data: ");
+    console.log("Connection opened");
+    console.log("Receiving data: ");
 
-        download.on('data', function (chunk) {      
+    download.on('data', function (chunk) {
 
-            process.stdout.write('#');  
-            writeStream.write(chunk);       
-        });
-
-        download.on('end', function () {
-
-            console.log('\nDownloaded:', url, 'to', fileName, '\n');
-            writeStream.end();                      
-        });
+      process.stdout.write('#');
+      writeStream.write(chunk);
     });
 
-    writeStream.on('close', function () {
+    download.on('end', function () {
 
-        callback();
+      console.log('\nDownloaded:', url, 'to', fileName, '\n');
+      writeStream.end();
     });
+  });
+
+  writeStream.on('close', function () {
+
+    callback();
+  });
 }, function(err) {
 
-    if (err) {
+  if (err) {
 
-      console.log(err);
-    } else {
+    console.log(err);
+  } else {
 
-    }
-}); 
+  }
+});

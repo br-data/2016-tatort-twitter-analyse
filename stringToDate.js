@@ -1,30 +1,30 @@
 // Convert all date strings in a MongoDB to date objects
 
 var mongoClient = require('mongodb').MongoClient;
-    
+
 var mongoUrl = 'mongodb://localhost:27017/tatort';
 var collectionName = 'tweets';
 
 (function init() {
 
-    stringToDate();
+  stringToDate();
 })();
 
 function stringToDate() {
 
-    mongoClient.connect(mongoUrl, function(error, db) {
+  mongoClient.connect(mongoUrl, function(error, db) {
 
-    	if (!error) {
+  	if (!error) {
 
-            console.log('Connected to database', mongoUrl);
-            var collection = db.collection(collectionName);
+      console.log('Connected to database', mongoUrl);
+      var collection = db.collection(collectionName);
 
 			var cursor = collection.find({ german_time: { $type: 2 } });
 
 			while (cursor.hasNext()) {
 
 				var doc = cursor.next();
-				
+
 				collection.update({_id : doc._id}, {$set : {german_time : new Date(doc.german_time)}});
 				collection.update({_id : doc._id}, {$set : {published_at : new Date(doc.published_at)}});
 			}
