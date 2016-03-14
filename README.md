@@ -30,7 +30,16 @@ Konvertiert alle Datum-Strings einer Collection in Date-Objekte:
 ```
 
 ### analyse.js
-Aggregiert und analysiert die Tweets aus der Datenbank. Die Ergebnisse werden als CSV gespeichert.
+Aggregiert und analysiert die Tweets aus der Datenbank. Die Ergebnisse werden als CSV gespeichert. Folgende Analysen werden durchgeführt:
+- tweetCount: Anzahl aller Tweets
+- userCount: Anzahl aller User
+- hashtags: Häufig verwendete Hashtags (Top 100),
+- mentions: Häufig genannte Benutzer (Top 100),
+- urls: Häufig verwendete URLs (Top 100),
+- retweets: Häufig retweetete Tweets (Top 100),
+- tweetsPerUser: User-Raking nach Tweets (Top 100),
+- tweetsPerDate: Ranking der Tatort-Folgen nach Tweets,
+- tweetsPerMinute: Tweets pro Minute (für den Chart)
 
 ### ranking.js
 Erzeugt eine Ranking der aktivesten Twitterer zum Hashtag Tatort. Importieren mit `mongoimport --db tatort --collection users --file users.json --jsonArray`
