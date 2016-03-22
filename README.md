@@ -1,4 +1,4 @@
-# Tatort-Twitter–Tools
+# #Tatort Twitter–Analyse
 Sammlung an Tools um alle Tweets zum Hashtag [#Tatort](https://twitter.com/search?f=tweets&vertical=default&q=%23tatort&src=typd) zu analysieren.
 
 ### Verwendung
@@ -52,15 +52,15 @@ Das Tweet-Objekt ist folgendermaßen aufgebaut:
 
 ### analyse.js
 Aggregiert und analysiert die Tweets aus der Datenbank. Die Ergebnisse werden als CSV gespeichert. Folgende Analysen werden durchgeführt:
-- tweetCount: Anzahl aller Tweets
-- userCount: Anzahl aller User
-- hashtags: Häufig verwendete Hashtags (Top 100),
-- mentions: Häufig genannte Benutzer (Top 100),
-- urls: Häufig verwendete URLs (Top 100),
-- retweets: Häufig retweetete Tweets (Top 100),
-- tweetsPerUser: User-Raking nach Tweets (Top 100),
-- tweetsPerDate: Ranking der Tatort-Folgen nach Tweets,
-- tweetsPerMinute: Tweets pro Minute (für den Chart)
+- **tweetCount**: Anzahl aller Tweets
+- **userCount**: Anzahl aller User
+- **hashtags**: Häufig verwendete Hashtags (Top 100),
+- **mentions**: Häufig genannte Benutzer (Top 100),
+- **urls**: Häufig verwendete URLs (Top 100),
+- **retweets**: Häufig retweetete Tweets (Top 100),
+- **tweetsPerUser**: User-Raking nach Tweets (Top 100),
+- **tweetsPerDate**: Ranking der Tatort-Folgen nach Tweets,
+- **tweetsPerMinute**: Tweets pro Minute (für den Chart)
 
 ### ranking.js
 Erzeugt eine Ranking der aktivesten Twitterer zum Hashtag Tatort. Importieren mit `mongoimport --db tatort --collection users --file users.json --jsonArray`
@@ -73,3 +73,13 @@ Erzeugt aus Tweets pro absoluter Minute (Timestamp 2015-02-01-20-00) ein Array m
 
 ### export.js
 Exportiert die Ergebnisse einer MongoDB-Suchanfrage in eine CSV-Tabelle.
+
+### convert.js
+Konvertiert JSON-Dateien in CSV-Tabellen. Man kann bestimmte JSON-Felder angeben, wenn man nicht alle Daten in die Tabelle kopiert werden sollen:
+
+```
+var fields = ['german_time', 'user_name', 'text'];
+var json = require('./tweets2015.json');
+var filename = 'tweets2015.csv';
+```
+
