@@ -20,42 +20,69 @@ function ranking() {
       var tweets = db.collection(tweetCollection);
       var users = db.collection(userCollection);
 
-      var bulk = users.initializeUnorderedBulkOp();
+      var batch = users.initializeUnorderedBulkOp();
 
       // Aggregate number of tweets per user
       tweets.aggregate([
         { $group: {
           _id: '$user_screen_name',
           count: { $sum: 1 }
-        }},
+        } },
         { $sort: { 'count': -1 } },
-        // { $limit: 100 },
-        { $project : { _id: 0, count: 0, name: '$_id', 'tweets': '$count' } }
+        // { $limit: 10 },
+        { $project : {
+          '_id': 0,
+          'name': '$_id',
+          'tweets': '$count'
+        } }
       ], function (error, result) {
 
-        // Calculate rank based on user tweet count
-        var rank = 0;
-        var lastValue = Infinity;
+        if (!error) {
 
-        result.forEach(function (doc) {
+          // Calculate rank based on user tweet count
+          var rank = 0;
+          var lastValue = Infinity;
 
-          if (doc.tweets < lastValue) {
+          result.forEach(function (doc) {
 
-            doc.rank = ++rank;
-            lastValue = doc.tweets;
-          } else {
+            if (doc.tweets < lastValue) {
 
-            doc.rank = rank;
-          }
-        });
+              doc.rank = ++rank;
+              lastValue = doc.tweets;
+            } else {
 
-        // Save ranking to (new) collection
-        //users.insert(result);
+              doc.rank = rank;
+            }
 
-        // Save user ranking to JSON
-        saveJSON(JSON.stringify(result), 'users/users.json');
+            // Update or insert file to batch
+            batch.find({ name: doc.name }).upsert().update({
+               $set: { tweets: doc.tweets, rank: doc.rank }
+             });
+          });
 
-        db.close();
+          // Execute batch and save file to server
+          batch.execute(function(error, result) {
+
+            if (!error) {
+
+              console.log('Number of entries inserted:', result.nInserted);
+              console.log('Number of entries upserted:', result.nUpserted);
+              console.log('Number of entries modified:', result.nModified);
+              db.close();
+            } else {
+
+              console.log(error);
+
+            }
+          });
+
+          // Save user ranking to JSON
+          saveJSON(JSON.stringify(result), 'users/users.json');
+        } else {
+
+          console.log(error);
+          db.close();
+        }
       });
 
     } else {
