@@ -39,6 +39,10 @@ function saveToMongo(files) {
 
         file.tweets.forEach(function (tweet) {
 
+          // Convert date strings to date objects
+          tweet.published_at = new Date(tweet.published_at);
+          tweet.german_time = new Date(tweet.german_time);
+
           batch.insert(tweet);
         });
       });

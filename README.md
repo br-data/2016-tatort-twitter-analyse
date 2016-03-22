@@ -6,15 +6,17 @@ Sammlung an Tools um alle Tweets zum Hashtag [#Tatort](https://twitter.com/searc
 2. Erforderliche Module installieren `npm install`
 3. Zum Beispiel `node download.js` ausführen, um das Skript zu starten.
 
+**Hinweis:** Node.js bekommt standardgemäß nur 512 MB Arbeitsspeicher. Unter Umständen reicht das nicht aus und führ zu einem Fehler *FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - process out of memory*. In diesem Fall kann man den verfügbaren Speicher einmalig auf 4 GB erhöhen: `node --max_old_space_size=4000000 import.js`
+
 ### Workflow
 1. **download.js** lädt die Tweets für die einzelnen Tatorte als CSV-Tabellen herunter
 2. **import.js** importiert die CSV-Tabellen in eine MongoDB-Collection **Tweets**.
-3. **stringToDate.js** wandelt die Datum-Strings in der Datenbank in Datums-Objekte um.
-4. **analyse.js** (optional) analysiert die Daten und speichert die Ergebnisse in mehreren CSV-Tabellen. Diese Auswertung dient für die redaktionelle Aufbereitung des Themas.
-5. **ranking.js** berechnet welche Benutzer am meisten getwittert haben und wie viele Benutzer gleich viel getwittert haben. 
+3. **analyse.js** (optional) analysiert die Daten und speichert die Ergebnisse in mehreren CSV-Tabellen. Diese Auswertung dient für die redaktionelle Aufbereitung des Themas.
+4. **ranking.js** berechnet welche Benutzer am meisten getwittert haben und wie viele Benutzer gleich viel getwittert haben. 
 
 ### download.js
 Lädt Dateien von mehreren URLs in das Verzeichnis *download* herunter. Die URLs werden als Array angegeben:
+
 ```
 var urls = ['https://tame.it/hashtrends/results.json?api_key=hrAVY2Q4l3RP9qgKeRMm&source=global&term=%23tatort&start_date=2014-01-01+20%3A00&end_date=2014-01-01+22%3A00&only=tweets&limit=100000',
 'https://tame.it/hashtrends/results.json?api_key=hrAVY2Q4l3RP9qgKeRMm&source=global&term=%23tatort&start_date=2014-01-05+20%3A00&end_date=2014-01-05+22%3A00&only=tweets&limit=100000',
@@ -22,9 +24,10 @@ var urls = ['https://tame.it/hashtrends/results.json?api_key=hrAVY2Q4l3RP9qgKeRM
 ```
 
 ### import.js
-Importiert alle JSON-Dateien im Verzeichnis *download* in einen lokale MongoDB. Es wird nur der Key `tweets` importiert.
+Importiert alle JSON-Dateien im Verzeichnis *download* in einen lokale MongoDB. Es wird nur der Key `tweets` importiert. Außerdem werden alle alle Datums-Strings in Date-Objekte konvertiert.
 
 Das Tweet-Objekt ist folgendermaßen aufgebaut:
+
 ```javascript
 {
   "_id": ObjectId("56729662501f313a0bcb0ad3"),
@@ -45,17 +48,6 @@ Das Tweet-Objekt ist folgendermaßen aufgebaut:
   "scope": 13617,
   "twitter_query_id": 127900108
 }
-```
-
-### stringToDate.js
-Konvertiert alle Datum-Strings einer Collection in Date-Objekte:
-
-```javascript
-// vorher
-"german_time": 2015-01-01T20:00:03Z
-
-// nachher
-"german_time": ISODate("2015-01-01T20:00:03Z")
 ```
 
 ### analyse.js
@@ -80,6 +72,4 @@ Berechnet wie viele Benutzer sich einen Rang teilen.
 Erzeugt aus Tweets pro absoluter Minute (Timestamp 2015-02-01-20-00) ein Array mit Tweets pro relativer Minute (Minute 1). Diese Daten werden für den Tatort-Tweet-Chart benötigt. 
 
 ### export.js
-Exportiert die Ergebnisse einer Suchanfrage in MongoDB in eine CSV-Tabelle.
-
-
+Exportiert die Ergebnisse einer MongoDB-Suchanfrage in eine CSV-Tabelle.
