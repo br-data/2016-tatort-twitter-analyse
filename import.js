@@ -27,7 +27,7 @@ function loadFiles() {
 
 function saveToMongo(files) {
 
-  mongoClient.connect(mongoUrl, function(error, db) {
+  mongoClient.connect(mongoUrl, function (error, db) {
 
     if (!error) {
 
@@ -47,7 +47,7 @@ function saveToMongo(files) {
         });
       });
 
-      batch.execute(function(error, result) {
+      batch.execute(function (error, result) {
 
         if (!error) {
 
@@ -62,6 +62,7 @@ function saveToMongo(files) {
     } else {
 
       console.log(error);
+      db.close();
     }
   });
 }

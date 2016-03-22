@@ -56,15 +56,16 @@ function ranking() {
 
             // Update or insert file to batch
             batch.find({ name: doc.name }).upsert().update({
-               $set: { tweets: doc.tweets, rank: doc.rank }
-             });
+              $set: { tweets: doc.tweets, rank: doc.rank }
+            });
           });
 
           // Execute batch and save file to server
-          batch.execute(function(error, result) {
+          batch.execute(function (error, result) {
 
             if (!error) {
 
+              console.log('Number of entries matched:', result.nMatched);
               console.log('Number of entries inserted:', result.nInserted);
               console.log('Number of entries upserted:', result.nUpserted);
               console.log('Number of entries modified:', result.nModified);
@@ -72,7 +73,7 @@ function ranking() {
             } else {
 
               console.log(error);
-
+              db.close();
             }
           });
 
