@@ -49,8 +49,8 @@ function convert(data) {
 
     currentDate.values.push({
 
-    minute: minute.toString(),
-    count: absoluteData[date][key]
+      minute: minute.toString(),
+      count: absoluteData[date][key]
     });
 
     minute++;

@@ -17,9 +17,9 @@ function ranking() {
     if (!error) {
 
       console.log('Connected to database', mongoUrl);
+
       var tweets = db.collection(tweetCollection);
       var users = db.collection(userCollection);
-
       var batch = users.initializeUnorderedBulkOp();
 
       // Aggregate number of tweets per user

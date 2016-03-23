@@ -3,7 +3,6 @@ var mongoClient = require('mongodb').MongoClient;
 
 var mongoUrl = 'mongodb://localhost:27017/tatort';
 var userCollection = 'users';
-var distributionCollection = 'distribution';
 
 (function init() {
 
@@ -18,9 +17,7 @@ function distribution() {
 
       console.log('Connected to database', mongoUrl);
 
-      var distribution = db.collection(distributionCollection);
       var users = db.collection(userCollection);
-
       var batch = users.initializeUnorderedBulkOp();
 
       // Aggregate number of users per tweet count

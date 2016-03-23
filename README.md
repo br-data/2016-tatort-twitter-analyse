@@ -1,14 +1,14 @@
 # #Tatort Twitter–Analyse
 Sammlung an Tools um alle Tweets zum Hashtag [#Tatort](https://twitter.com/search?f=tweets&vertical=default&q=%23tatort&src=typd) zu analysieren.
 
-### Verwendung
+## Verwendung
 1. Repository klonen `git clone https://...`
 2. Erforderliche Module installieren `npm install`
 3. Zum Beispiel `node download.js` ausführen, um das Skript zu starten.
 
 **Hinweis:** Node.js bekommt standardgemäß nur 512 MB Arbeitsspeicher. Unter Umständen reicht das nicht aus und führ zu einem Fehler *FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - process out of memory*. In diesem Fall kann man den verfügbaren Speicher einmalig auf 4 GB erhöhen: `node --max_old_space_size=4000000 import.js`
 
-### Workflow
+## Workflow
 1. **download.js** lädt die Tweets für die einzelnen Tatorte als CSV-Tabellen herunter
 2. **import.js** importiert die CSV-Tabellen in eine MongoDB-Collection **Tweets**.
 3. **ranking.js** berechnet welche Benutzer wie viel getwittert haben (absolut) und welchen Rang sie damit einnehmen (relativ).
@@ -65,6 +65,8 @@ Erzeugt eine Ranking der aktivesten Twitterer zum Hashtag Tatort. Die Daten werd
 }
 ```
 
+**Hinweis**: Der Vorgang kann bei viele Benutzer (~70.000) recht lang dauern (~15 Minuten).
+
 ### distribution.js
 Berechnet wie viele Benutzer sich einen Rang teilen und wie viele Benutzer schlechter sind:
 
@@ -105,4 +107,9 @@ var fields = ['german_time', 'user_name', 'text'];
 var json = require('./tweets2015.json');
 var filename = 'tweets2015.csv';
 ```
+
+## Verbesserungen
+- import.js sollte mit upserts funktionieren (statt inserts)
+- ranking.js und distribution.js könnte man zusammenfassen
+- ranking.js Performance verbessern
 
