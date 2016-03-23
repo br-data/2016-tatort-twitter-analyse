@@ -20,7 +20,7 @@ Sammlung an Tools um alle Tweets zum Hashtag [#Tatort](https://twitter.com/searc
 ### download.js
 Lädt Dateien von mehreren URLs in das Verzeichnis *download* herunter. Die URLs werden als Array angegeben:
 
-```
+```javascript
 var urls = ['https://tame.it/hashtrends/results.json?api_key=hrAVY2Q4l3RP9qgKeRMm&source=global&term=%23tatort&start_date=2014-01-01+20%3A00&end_date=2014-01-01+22%3A00&only=tweets&limit=100000',
 'https://tame.it/hashtrends/results.json?api_key=hrAVY2Q4l3RP9qgKeRMm&source=global&term=%23tatort&start_date=2014-01-05+20%3A00&end_date=2014-01-05+22%3A00&only=tweets&limit=100000',
 'https://tame.it/hashtrends/results.json?api_key=hrAVY2Q4l3RP9qgKeRMm&source=global&term=%23tatort&start_date=2014-01-05+21%3A30&end_date=2014-01-05+23%3A30&only=tweets&limit=100000'];
@@ -82,7 +82,7 @@ Berechnet wie viele Benutzer sich einen Rang teilen und wie viele Benutzer schle
 ```
 
 ### twitter.js
-Importiert Twitter-Daten für jeden Benutzer. Die Twitter-API hat eine Limit von 180 Anfrage pro 15 Minuten, respektive 1 Anfrage pro 5 Sekunden. Daher dauert der Import recht lange. Die Anfragen werden über ein Proxy gestellt: http://ddj.br.de/twitter-service/users/show/ardtext777. Dort ist auch der API-Key hinterlegt. 
+Importiert Twitter-Daten für jeden Benutzer. Die [Twitter-API](https://dev.twitter.com/rest/public/rate-limits) hat eine Limit von 180 Anfrage pro 15 Minuten, respektive 1 Anfrage pro 5 Sekunden. Daher dauert der Import recht lange. Die Anfragen werden über den BR-Data [Proxy-Service](https://github.com/digitalegarage/twitter-api-service) gestellt. Dort ist auch der API-Key hinterlegt.
 
 ```javascript
 { _id: 56f16a58e32637be0096da08,
@@ -101,6 +101,8 @@ Importiert Twitter-Daten für jeden Benutzer. Die Twitter-API hat eine Limit von
   twitter_updated: Wed Mar 23 2016 11:21:00 GMT+0100 (CET)
 }
 ```
+
+**Hinweis**: Für 70.000 Benutzer dauert der Importvorgang circa 4 Tage.
 
 ### chartData.js
 Erzeugt aus Tweets pro absoluter Minute (Timestamp 2015-02-01-20-00) ein Array mit Tweets pro relativer Minute (Minute 1). Diese Daten werden für den Tatort-Tweet-Chart benötigt.
@@ -123,7 +125,7 @@ Exportiert die Ergebnisse einer MongoDB-Suchanfrage in eine CSV-Tabelle.
 ### convert.js
 Konvertiert JSON-Dateien in CSV-Tabellen. Man kann bestimmte JSON-Felder angeben, wenn man nicht alle Daten in die Tabelle kopiert werden sollen:
 
-```
+```javascript
 var fields = ['german_time', 'user_name', 'text'];
 var json = require('./tweets2015.json');
 var filename = 'tweets2015.csv';

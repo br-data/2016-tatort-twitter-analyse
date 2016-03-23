@@ -10,58 +10,65 @@ var fs = require('fs');
 
 function convert(data) {
 
+  // Convert absolute data
   var absoluteData = {};
-  var relativeData = [];
 
   data.forEach(function (d) {
 
-  var date = d._id.year.toString() + pad(d._id.month.toString(), 2) + pad(d._id.day.toString(), 2);
-  var time = pad(d._id.hour.toString(), 2) + pad(d._id.minute.toString(), 2);
+    var date = d._id.year.toString() + pad(d._id.month.toString(), 2) + pad(d._id.day.toString(), 2);
+    var time = pad(d._id.hour.toString(), 2) + pad(d._id.minute.toString(), 2);
 
-  if (absoluteData[date]) {
+    if (absoluteData[date]) {
 
-    absoluteData[date][time] = d.count;
-  } else {
+      absoluteData[date][time] = d.count;
+    } else {
 
-    absoluteData[date] = {};
-    absoluteData[date][time] = d.count;
-  }
+      absoluteData[date] = {};
+      absoluteData[date][time] = d.count;
+    }
   });
 
-  console.log(absoluteData);
+  // Convert to relative data
+  var relativeData = [];
 
   for (var date in absoluteData) {
 
-  var index = search('date', date, relativeData);
-  var keys = Object.keys(absoluteData[date]).sort();
+    var index = search('date', date, relativeData);
+    var keys = Object.keys(absoluteData[date]).sort();
+    var minute = 0;
+    var currentDate = relativeData[index] || {};
 
-  var currentDate = relativeData[index] || {};
     currentDate.values = [];
 
-  var minute = 0;
+    keys.forEach(function (key) {
 
-  keys.forEach(function (key) {
+      if (!index) {
+
+        currentDate.date = date;
+      }
+
+      currentDate.values.push({
+
+        minute: minute.toString(),
+        count: absoluteData[date][key]
+      });
+
+      minute++;
+    });
 
     if (!index) {
 
-    currentDate.date = date;
+      relativeData.push(currentDate);
     }
+  }
 
-    currentDate.values.push({
+  // Trim extra minutes to 119
+  relativeData.forEach(function (key) {
 
-      minute: minute.toString(),
-      count: absoluteData[date][key]
-    });
-
-    minute++;
+    key.values.length = 119;
   });
 
-  if (!index) {
-
-    relativeData.push(currentDate);
-  }
-  }
-
+  // Save JSON to file
   saveFile(JSON.stringify(relativeData), './chart/tweetsPerMinuteRel.json');
 }
 

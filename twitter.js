@@ -53,7 +53,7 @@ function twitter() {
 
 function updateUserInfo(users, doc, callback) {
 
-  // Timeout to respect the Twitter API Limit (180 requests per 15 minutes)
+  // Timeout to respect the Twitter API Limit (1 request per 5 seconds)
   // https://dev.twitter.com/rest/public/rate-limits
   setTimeout(function () {
 
