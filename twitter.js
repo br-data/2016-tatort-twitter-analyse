@@ -5,6 +5,7 @@ var mongoClient = require('mongodb').MongoClient;
 var mongoUrl = 'mongodb://localhost:27017/tatort';
 var twitterService = 'http://ddj.br.de/twitter-service/users/show/';
 var userCollection = 'users';
+var dbConnection;
 
 (function init() {
 
@@ -18,6 +19,7 @@ function twitter() {
     if (!error) {
 
       console.log('Connected to database', mongoUrl);
+      dbConnection = db;
 
       var users = db.collection(userCollection);
 
@@ -57,7 +59,14 @@ function updateUserInfo(users, doc, callback) {
   // https://dev.twitter.com/rest/public/rate-limits
   setTimeout(function () {
 
-    getTwitterData(doc.name, update);
+    try {
+
+      getTwitterData(doc.name, update);
+    } catch (error) {
+
+      console.log(error);
+      dbConnection.close();
+    }
   }, 6000);
 
   function update(data) {
@@ -96,10 +105,18 @@ function getTwitterData(username, callback) {
 
     res.on('end', function () {
 
-      callback(JSON.parse(data));
+      try {
+
+        callback(JSON.parse(data));
+      } catch (error) {
+
+        console.log(error);
+        dbConnection.close();
+      }
     });
   }).on('error', function (error) {
 
     console.log(error);
+    dbConnection.close();
   });
 }
