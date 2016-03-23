@@ -13,7 +13,7 @@ Sammlung an Tools um alle Tweets zum Hashtag [#Tatort](https://twitter.com/searc
 2. **import.js** importiert die CSV-Tabellen in eine MongoDB-Collection **Tweets**.
 3. **ranking.js** berechnet welche Benutzer wie viel getwittert haben (absolut) und welchen Rang sie damit einnehmen (relativ).
 4. **distribution.js** wie viele Benutzer sich den gleichen Rang teilen und wie viele Benutzer schlechter sind (prozentual).
-5. **twitter.js** holt für alle Benutzer die Gesamtzahl der Tweets, die Follower-Anzahl und das Profilbild über die Twitter-API.
+5. **twitter.js** holt für alle Benutzer die Basisdaten (Follower, Tweets, Profilbild etc.) von der Twitter-API.
 6. **chartData.js** berechnet die Tweets pro Minute für den Tatort-Chart und interpoliert die fehlenden Werte.
 7. **analyse.js** (optional) analysiert die Daten und speichert die Ergebnisse in mehreren CSV-Tabellen. Diese Auswertung dient für die redaktionelle Aufbereitung des Themas.
 
@@ -78,6 +78,27 @@ Berechnet wie viele Benutzer sich einen Rang teilen und wie viele Benutzer schle
   "rank" : 1,
   "better" : 99,  // Prozent schlecht
   "same" : 0      // Prozent gleich
+}
+```
+
+### twitter.js
+Importiert Twitter-Daten für jeden Benutzer. Die Twitter-API hat eine Limit von 180 Anfrage pro 15 Minuten, respektive 1 Anfrage pro 5 Sekunden. Daher dauert der Import recht lange. Die Anfragen werden über ein Proxy gestellt: http://ddj.br.de/twitter-service/users/show/ardtext777. Dort ist auch der API-Key hinterlegt. 
+
+```javascript
+{ _id: 56f16a58e32637be0096da08,
+  name: 'ardtext777',
+  tweets: 6276,
+  rank: 1,
+  better: 99,
+  same: 0,
+  twitter_status: 'ok',
+  twitter_image: 'http://pbs.twimg.com/profile_images/643348384032641024/f_BVIo0t_normal.png',
+  twitter_color: '0CBEEB',
+  twitter_location: '',
+  twitter_tweets: 16464,
+  twitter_following: 151,
+  twitter_followers: 1734,
+  twitter_updated: Wed Mar 23 2016 11:21:00 GMT+0100 (CET)
 }
 ```
 
