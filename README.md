@@ -76,7 +76,7 @@ Berechnet wie viele Benutzer sich einen Rang teilen und wie viele Benutzer schle
   "name" : "ardtext777",
   "tweets" : 6276,
   "rank" : 1,
-  "better" : 99,  // Prozent schlecht
+  "better" : 99,  // Prozent schlechter
   "same" : 0      // Prozent gleich
 }
 ```
@@ -135,4 +135,4 @@ var filename = 'tweets2015.csv';
 - import.js sollte mit upserts funktionieren (statt inserts)
 - ranking.js und distribution.js könnte man zusammenfassen
 - ranking.js Performance verbessern
-
+- Attribut *better* in *worse* umbenennen 😉

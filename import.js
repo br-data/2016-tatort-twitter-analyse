@@ -43,6 +43,10 @@ function saveToMongo(files) {
           tweet.published_at = new Date(tweet.published_at);
           tweet.german_time = new Date(tweet.german_time);
 
+          // @Todo Use upserts instead of inserts
+          // batch.find({ twitter_id: tweet.twitter_id }).upsert().update({
+          //   $set: tweet
+          // });
           batch.insert(tweet);
         });
       });
