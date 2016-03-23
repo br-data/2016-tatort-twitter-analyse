@@ -11,8 +11,11 @@ Sammlung an Tools um alle Tweets zum Hashtag [#Tatort](https://twitter.com/searc
 ### Workflow
 1. **download.js** lädt die Tweets für die einzelnen Tatorte als CSV-Tabellen herunter
 2. **import.js** importiert die CSV-Tabellen in eine MongoDB-Collection **Tweets**.
-3. **analyse.js** (optional) analysiert die Daten und speichert die Ergebnisse in mehreren CSV-Tabellen. Diese Auswertung dient für die redaktionelle Aufbereitung des Themas.
-4. **ranking.js** berechnet welche Benutzer am meisten getwittert haben und wie viele Benutzer gleich viel getwittert haben. 
+3. **ranking.js** berechnet welche Benutzer wie viel getwittert haben (absolut) und welchen Rang sie damit einnehmen (relativ).
+4. **distribution.js** wie viele Benutzer sich den gleichen Rang teilen und wie viele Benutzer schlechter sind (prozentual).
+5. **twitter.js** holt für alle Benutzer die Gesamtzahl der Tweets, die Follower-Anzahl und das Profilbild über die Twitter-API.
+6. **chartData.js** berechnet die Tweets pro Minute für den Tatort-Chart und interpoliert die fehlenden Werte.
+7. **analyse.js** (optional) analysiert die Daten und speichert die Ergebnisse in mehreren CSV-Tabellen. Diese Auswertung dient für die redaktionelle Aufbereitung des Themas.
 
 ### download.js
 Lädt Dateien von mehreren URLs in das Verzeichnis *download* herunter. Die URLs werden als Array angegeben:
@@ -50,6 +53,35 @@ Das Tweet-Objekt ist folgendermaßen aufgebaut:
 }
 ```
 
+### ranking.js
+Erzeugt eine Ranking der aktivesten Twitterer zum Hashtag Tatort. Die Daten werden in der Collection **users** gespeichert:
+
+```javascript
+{
+  "_id" : ObjectId("56f16a58e32637be0096da08"),
+  "name" : "ardtext777",
+  "tweets" : 6276,
+  "rank" : 1
+}
+```
+
+### distribution.js
+Berechnet wie viele Benutzer sich einen Rang teilen und wie viele Benutzer schlechter sind:
+
+```javascript
+{
+  "_id" : ObjectId("56f16a58e32637be0096da08"),
+  "name" : "ardtext777",
+  "tweets" : 6276,
+  "rank" : 1,
+  "better" : 99,  // Prozent schlecht
+  "same" : 0      // Prozent gleich
+}
+```
+
+### chartData.js
+Erzeugt aus Tweets pro absoluter Minute (Timestamp 2015-02-01-20-00) ein Array mit Tweets pro relativer Minute (Minute 1). Diese Daten werden für den Tatort-Tweet-Chart benötigt.
+
 ### analyse.js
 Aggregiert und analysiert die Tweets aus der Datenbank. Die Ergebnisse werden als CSV gespeichert. Folgende Analysen werden durchgeführt:
 - **tweetCount**: Anzahl aller Tweets
@@ -61,15 +93,6 @@ Aggregiert und analysiert die Tweets aus der Datenbank. Die Ergebnisse werden al
 - **tweetsPerUser**: User-Raking nach Tweets (Top 100),
 - **tweetsPerDate**: Ranking der Tatort-Folgen nach Tweets,
 - **tweetsPerMinute**: Tweets pro Minute (für den Chart)
-
-### ranking.js
-Erzeugt eine Ranking der aktivesten Twitterer zum Hashtag Tatort. Importieren mit `mongoimport --db tatort --collection users --file users.json --jsonArray`
-
-### rankingDistribution.js
-Berechnet wie viele Benutzer sich einen Rang teilen.
-
-### convertChartData.js
-Erzeugt aus Tweets pro absoluter Minute (Timestamp 2015-02-01-20-00) ein Array mit Tweets pro relativer Minute (Minute 1). Diese Daten werden für den Tatort-Tweet-Chart benötigt. 
 
 ### export.js
 Exportiert die Ergebnisse einer MongoDB-Suchanfrage in eine CSV-Tabelle.
