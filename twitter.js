@@ -26,7 +26,8 @@ function twitter() {
       // Serially iterate over all users
       // http://stackoverflow.com/a/18119789/2037629
       // users.find({ 'tweets': { '$gt': 4000 } }, function (error, cursor) {
-      users.find({ 'twitter_updated' : { '$exists': false } }, function (error, cursor) {
+      // users.find({ 'twitter_updated' : { '$exists': false } }, function (error, cursor) {
+      users.find({}, function (error, cursor) {
 
         function processItem(error, doc) {
 
