@@ -111,7 +111,8 @@ var urls = [
   'https://tame.it/hashtrends/results.json?api_key=hrAVY2Q4l3RP9qgKeRMm&source=global&term=%23tatort&start_date=2016-02-28+20%3A00&end_date=2016-02-28+22%3A00&only=tweets&limit=100000',
   'https://tame.it/hashtrends/results.json?api_key=hrAVY2Q4l3RP9qgKeRMm&source=global&term=%23tatort&start_date=2016-03-06+20%3A00&end_date=2016-03-06+22%3A00&only=tweets&limit=100000',
   'https://tame.it/hashtrends/results.json?api_key=hrAVY2Q4l3RP9qgKeRMm&source=global&term=%23tatort&start_date=2016-03-13+20%3A15&end_date=2016-03-13+22%3A15&only=tweets&limit=100000',
-  'https://tame.it/hashtrends/results.json?api_key=hrAVY2Q4l3RP9qgKeRMm&source=global&term=%23tatort&start_date=2016-03-20+20%3A00&end_date=2016-03-20+22%3A00&only=tweets&limit=100000'
+  'https://tame.it/hashtrends/results.json?api_key=hrAVY2Q4l3RP9qgKeRMm&source=global&term=%23tatort&start_date=2016-03-20+20%3A00&end_date=2016-03-20+22%3A00&only=tweets&limit=100000',
+  'https://tame.it/hashtrends/results.json?api_key=hrAVY2Q4l3RP9qgKeRMm&source=global&term=%23tatort&start_date=2016-03-28+20%3A00&end_date=2016-03-28+22%3A00&only=tweets&limit=100000'
 ];
 
 var fs = require('fs');
