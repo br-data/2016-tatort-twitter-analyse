@@ -60,7 +60,7 @@ function analyse() {
         { $group: {
           _id: '$user_screen_name',
           count: { $sum: 1 }
-        }},
+        } },
         { $sort: { 'count': -1 } },
         { $limit: 100 }
       ], function (error, result) {
@@ -79,7 +79,7 @@ function analyse() {
         { $group: {
           _id: '$hashtags',
           count: { $sum: 1 }
-        }},
+        } },
         { $sort: { 'count': -1 } },
         { $limit: 100 }
       ], function (error, result) {
@@ -98,7 +98,7 @@ function analyse() {
         { $group: {
           _id: '$mentions',
           count: { $sum: 1 }
-        }},
+        } },
         { $sort: { 'count': -1 } },
         { $limit: 100 }
       ], function (error, result) {
@@ -117,7 +117,7 @@ function analyse() {
         { $group: {
           _id: '$urls',
           count: { $sum: 1 }
-        }},
+        } },
         { $sort: { 'count': -1 } },
         { $limit: 100 }
       ], function (error, result) {
@@ -155,8 +155,7 @@ function analyse() {
             day: { $dayOfMonth : '$german_time' },
           },
           count: { $sum: 1 }
-        }},
-
+        } },
         { $sort: { 'count': -1 } }
       ], function (error, result) {
 
@@ -180,8 +179,7 @@ function analyse() {
             minute: { $minute : '$german_time' },
           },
           count: { $sum: 1 }
-        }},
-
+        } },
         { $sort: { 'count': -1 } }
 
       ], function (error, result) {
