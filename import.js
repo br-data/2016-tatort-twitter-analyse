@@ -43,11 +43,15 @@ function saveToMongo(files) {
           tweet.published_at = new Date(tweet.published_at);
           tweet.german_time = new Date(tweet.german_time);
 
-          // @Todo Use upserts instead of inserts
-          // batch.find({ twitter_id: tweet.twitter_id }).upsert().update({
-          //   $set: tweet
-          // });
-          batch.insert(tweet);
+          console.log('Upserted tweet ', tweet.twitter_id);
+
+          // Upsert method
+          batch.find({ twitter_id: tweet.twitter_id }).upsert().update({
+            $set: tweet
+          });
+
+          // Insert method
+          // batch.insert(tweet);
         });
       });
 
@@ -55,7 +59,10 @@ function saveToMongo(files) {
 
         if (!error) {
 
+          console.log('Number of entries matched:', result.nMatched);
           console.log('Number of entries inserted:', result.nInserted);
+          console.log('Number of entries upserted:', result.nUpserted);
+          console.log('Number of entries modified:', result.nModified);
           db.close();
         } else {
 
