@@ -77,8 +77,6 @@ function ranking() {
             }
           });
 
-          // Save user ranking to JSON
-          saveJSON(JSON.stringify(result), 'users/users.json');
         } else {
 
           console.log(error);
@@ -88,21 +86,8 @@ function ranking() {
 
     } else {
 
-      db.close();
-    }
-  });
-}
-
-function saveJSON(string, filename) {
-
-  fs.writeFile(filename, string, function (error) {
-
-    if (!error) {
-
-      console.log('File saved:', filename);
-    } else {
-
       console.log(error);
+      db.close();
     }
   });
 }

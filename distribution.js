@@ -18,30 +18,27 @@ function distribution() {
       console.log('Connected to database', mongoUrl);
 
       var users = db.collection(userCollection);
-      var batch = users.initializeUnorderedBulkOp();
+      var bulk = users.initializeUnorderedBulkOp();
 
       // Aggregate number of users per tweet count
       users.aggregate([
         { $group: {
           _id: '$rank',
           count: { $sum: 1 }
-        }},
+        } },
         { $sort: { 'count': -1 } }
       ], function (error, result) {
 
         if (!error) {
 
-          // Save ranking distribution to JSON
-          saveJSON(JSON.stringify(result), 'users/distribution.json');
-
           // Get get ranking percentages per user
           // Same: How many people share the same ranking then me?
-          // How many people are better?
+          // Better: How many people are worse than me?
           users.find({}).forEach(function (doc) {
 
             var percentage = getPercentage(result, doc);
 
-            batch.find({'_id': doc._id}).update({
+            bulk.find({'_id': doc._id}).update({
               $set: {
                 better: percentage.better,
                 same: percentage.same
@@ -49,8 +46,8 @@ function distribution() {
             });
           }, function () {
 
-            // Execute batch and save file to server
-            batch.execute(function (error, result) {
+            // Execute bulk and save file to server
+            bulk.execute(function (error, result) {
 
               if (!error) {
 
@@ -106,18 +103,4 @@ function getPercentage(distribution, user) {
     better: Math.floor((before / sum) * 100),
     same: Math.floor(100 / (sum / count[0].count))
   };
-}
-
-function saveJSON(string, filename) {
-
-  fs.writeFile(filename, string, function (error) {
-
-    if (!error) {
-
-      console.log('File saved:', filename);
-    } else {
-
-      console.log(error);
-    }
-  });
 }

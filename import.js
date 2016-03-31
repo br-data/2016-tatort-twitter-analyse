@@ -1,5 +1,4 @@
 // Import JSON files to MongoDB
-
 var fs = require('fs');
 var mongoClient = require('mongodb').MongoClient;
 
