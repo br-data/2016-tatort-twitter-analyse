@@ -49,7 +49,7 @@ function convert(data) {
 
       currentDate.values.push({
 
-        minute: minute.toString(),
+        minute: parseInt(minute),
         count: absoluteData[date][key]
       });
 
@@ -62,31 +62,22 @@ function convert(data) {
     }
   }
 
+  // Interpolate the last two values
   relativeData.forEach(function (episode) {
 
-    // Interpolate the last value if necessary
-    if (episode.values.length < 120) {
+    episode.values.length = 119;
 
-      episode.values.push({
+    episode.values.push({
 
-        minute: 119,
-        count: episode.values[118].count
-      });
-    }
+      minute: 119,
+      count: episode.values[118].count
+    });
 
-    if (episode.values.length < 121) {
+    episode.values.push({
 
-      episode.values.push({
-
-        minute: 120,
-        count: episode.values[119].count
-      });
-    }
-
-    // Trim minutes to 120
-    episode.values.length = 121;
-
-    console.log(episode.values.length);
+      minute: 120,
+      count: episode.values[119].count
+    });
   });
 
   // Save JSON to file
