@@ -62,7 +62,6 @@ function convert(data) {
     }
   }
 
-
   relativeData.forEach(function (episode) {
 
     // Interpolate the last value if necessary
@@ -86,6 +85,8 @@ function convert(data) {
 
     // Trim minutes to 120
     episode.values.length = 121;
+
+    console.log(episode.values.length);
   });
 
   // Save JSON to file
