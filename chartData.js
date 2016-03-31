@@ -62,10 +62,30 @@ function convert(data) {
     }
   }
 
-  // Trim extra minutes to 119
-  relativeData.forEach(function (key) {
 
-    key.values.length = 119;
+  relativeData.forEach(function (episode) {
+
+    // Interpolate the last value if necessary
+    if (episode.values.length < 120) {
+
+      episode.values.push({
+
+        minute: 119,
+        count: episode.values[118].count
+      });
+    }
+
+    if (episode.values.length < 121) {
+
+      episode.values.push({
+
+        minute: 120,
+        count: episode.values[119].count
+      });
+    }
+
+    // Trim minutes to 120
+    episode.values.length = 121;
   });
 
   // Save JSON to file
